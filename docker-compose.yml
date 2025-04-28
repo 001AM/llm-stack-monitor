@@ -1,0 +1,84 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app/backend
+    ports:
+      - "8000:8000"
+    environment:
+      - UVICORN_WS=websockets
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    restart: always
+
+  frontend:
+    build: ./frontend
+    command: pnpm dev
+    volumes:
+      - ./frontend:/app/frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+      - REACT_APP_WS_URL=ws://localhost:8000/ws
+    depends_on:
+      - backend
+    restart: always
+
+  db:
+    image: mysql:8
+    volumes:
+      - mysql_data:/var/lib/mysql
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "8080:80"  # Map host 8080 to container 80 (Apache's default port)
+    environment:
+      PMA_HOST: db  # Critical - tells phpMyAdmin where MySQL is
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      - db
+    restart: always
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - redis_data:/data
+
+  # celery:
+  #   build: ./backend
+  #   command: celery -A backend.celery worker --loglevel=info
+  #   volumes:
+  #     - ./backend:/app/backend
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   environment:
+  #     - CELERY_BROKER_URL=redis://redis:6379/0
+  #     - CELERY_RESULT_BACKEND=redis://redis:6379/0
+  #     - DOCKER_HOST=unix:///var/run/docker.sock
+  #   depends_on:
+  #     - redis
+  #     - backend
+  #   restart: always
+
+volumes:
+  mysql_data:
+  redis_data:
