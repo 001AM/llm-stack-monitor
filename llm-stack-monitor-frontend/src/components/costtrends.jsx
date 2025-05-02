@@ -80,17 +80,17 @@ export function CostTrends() {
         </Tabs>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px] w-full">
+        <div className="h-[300px] w-full pt-2">
           <div className="flex items-end h-full gap-2">
             {chartData.map((item, index) => (
               <div key={index} className="relative flex flex-col justify-end w-full h-full">
                 <div
-                  className="w-full transition-all rounded-md bg-primary/90 hover:bg-primary"
+                  className="w-full transition-all bg-blue-400 rounded-md hover:bg-blue-700"
                   style={{ height: `${(item.cost / maxValue) * 100}%` }}
                 >
                   <div className="absolute w-full text-xs text-center -top-6">${item.cost.toFixed(2)}</div>
                 </div>
-                <div className="mt-2 text-xs text-center origin-left rotate-45">{item.date}</div>
+                <div className="mt-2 text-xs text-center origin-left">{item.date}</div>
               </div>
             ))}
           </div>
