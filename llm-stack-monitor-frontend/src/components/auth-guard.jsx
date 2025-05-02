@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth-context";
 
 export function AuthGuard(props) {
