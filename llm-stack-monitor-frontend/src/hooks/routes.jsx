@@ -1,6 +1,7 @@
 import { Layout } from "../components/layout/dashboard-layout";
 import CostAnaylsis from "../pages/costanalysis/page";
 import Dashboard from "../pages/dashboard/dashboard";
+import Integration from "../pages/integrations/page";
 import NotFound from "../pages/notfound/notfound";
 
 const routesConfig = [
@@ -23,6 +24,10 @@ const routesConfig = [
       {
         path: "/cost-analysis/",
         element: <CostAnaylsis />,
+      },
+      {
+        path: "/integration/",
+        element: <Integration />,
       },
     ],
   },

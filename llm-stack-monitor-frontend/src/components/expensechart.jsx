@@ -57,7 +57,7 @@ export function ExpenseChart({className}) {
 
   return (
     <Card className={cn("flex flex-col", className)}>
-      <CardHeader className="items-center pb-0">
+      <CardHeader className="items-center h-full pb-0">
         <CardTitle>Pie Chart - Donut with Text</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>

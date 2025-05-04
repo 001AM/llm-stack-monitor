@@ -48,7 +48,7 @@ export const Layout = () => {
   const sidebarRef = useRef();
 
   const sidebarItems = [
-    { icon: Home, label: "Dashboard", href: "/dashboard" },
+    { icon: Home, label: "Dashboard", href: "/" },
     { icon: DollarSign, label: "Cost Analysis", href: "/cost-analysis" },
     {
       icon: AlertTriangleIcon,
