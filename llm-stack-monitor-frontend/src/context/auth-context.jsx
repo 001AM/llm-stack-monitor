@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "../lib/axios";
 
 const AuthContext = createContext(undefined);
@@ -9,7 +9,6 @@ export function AuthProvider({ children }) {
   const navigate = useNavigate()
   const [user, setUser] = useState(null);
   const [status, setStatus] = useState("loading");
-  const router = useLocation();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -62,7 +61,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const signUp = async (email, password, role) => {
+  const signUp = async (email, password) => {
     try {
       setStatus("loading");
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -103,7 +102,7 @@ export function AuthProvider({ children }) {
     navigate("/");
   };
 
-  const resetPassword = async (email) => {
+  const resetPassword = async () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return Promise.resolve();
   };
