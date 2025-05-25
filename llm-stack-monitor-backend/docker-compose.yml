@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  # backend:
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile
+  #   command: >
+  #     uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - DATABASE_URL=postgresql+asyncpg://postgres:password@db:5432/llmtrace
+  #     - REDIS_URL=redis://redis:6379
+  #     - SECRET_KEY=your_jwt_secret_key
+  #   depends_on:
+  #     - db
+  #     - redis
+
+  db:
+    image: postgres:15
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: llmtrace
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    restart: always
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com  # Change to your preferred email
+      PGADMIN_DEFAULT_PASSWORD: adminpassword   # Change to a strong password
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  postgres_data:
+  pgadmin_data:
