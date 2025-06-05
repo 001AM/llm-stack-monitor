@@ -1,6 +1,5 @@
-from fastapi import FastAPI, Depends
-from sqlmodel import Session
-from database import init_db
+from fastapi import FastAPI
+from db.database import init_db
 from models.user import User
 from auth.routes import router as auth_router  # Corrected import
 from routes.protected_routes import router as protected_router  # Assuming you have routes her

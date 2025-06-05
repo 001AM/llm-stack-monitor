@@ -19,7 +19,7 @@ URL = os.environ.get("URL")
 class Logger:
     
     @staticmethod
-    def log(model: str, start_time: float, response: Dict[str, Any]):
+    def log(model: str, start_time: float, response: Dict[str, Any],user_message):
         duration = time.time() - start_time
         usage = response.get("usage", {})
         choices = response.get("choices", [{}])
@@ -31,6 +31,7 @@ class Logger:
             "completion_tokens": usage.get("completion_tokens", 0),
             "total_tokens": usage.get("total_tokens", 0),
             "assistant_message": choices[0].get("message", {}),
+            "user_message" : user_message
         }
 
         try:
@@ -50,7 +51,8 @@ class Trace:
         model: str,
         user_id: Optional[str],
         label: str,
-        meta_data: Optional[Dict[str, Any]] = None
+        meta_data: Optional[Dict[str, Any]],
+        user_message: None
     ):
         self.model = model
         self.user_id = user_id
@@ -58,9 +60,10 @@ class Trace:
         self.meta_data = meta_data or {}
         self.trace_id = str(uuid.uuid4())
         self.start_time = time.time()
+        self.user_message = user_message
 
     def end(self, response: Dict[str, Any]):
-        Logger.log(model=self.model, start_time=self.start_time, response=response)
+        Logger.log(model=self.model, start_time=self.start_time, response=response,user_message=self.user_message)
 
 
 class OpenAILLMStack:
@@ -75,4 +78,4 @@ class OpenAILLMStack:
         label: str,
         meta_data: Optional[Dict[str, Any]] = None
     ) -> Trace:
-        return Trace(model=self.model, user_id=user_id, label=label, meta_data=meta_data)
+        return Trace(model=self.model, user_id=user_id, label=label, meta_data=meta_data, user_message = self.messages)
