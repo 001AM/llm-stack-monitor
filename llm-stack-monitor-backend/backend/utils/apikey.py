@@ -1,7 +1,7 @@
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from database import get_sync_session
+from db.database import get_sync_session
 from models.user import APIKey
 import secrets
 
